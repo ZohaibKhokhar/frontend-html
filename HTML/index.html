@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Visit Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Patient Visit Manager</h1>
+        <div>
+            <span id="welcomeMsg" class="me-3"></span>
+            <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+        </div>
+    </div>
+
+    <div class="list-group">
+        <a href="view-patients.html" class="list-group-item list-group-item-action">View Patients</a>
+        <a href="view-visits.html" class="list-group-item list-group-item-action">View Visits</a>
+        <a href="add-patient.html" class="list-group-item list-group-item-action">Add Patient</a>
+        <a href="add-visit.html" class="list-group-item list-group-item-action">Add Visit</a>
+        <a href="add-doctor.html" id="addDoctorLink" class="list-group-item list-group-item-action">Add Doctor</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const username = localStorage.getItem("username");
+            const role = localStorage.getItem("role");
+
+            // Redirect if not logged in
+            if (!username || !role) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Show welcome message
+            document.getElementById("welcomeMsg").textContent = `Welcome, ${username} (${role})`;
+
+            // Restrict Add Doctor link to Admin only
+            if (role.toLowerCase() !== "admin") {
+                document.getElementById("addDoctorLink").style.display = "none";
+            }
+
+            // Logout handler
+            document.getElementById("logoutBtn").addEventListener("click", () => {
+                localStorage.clear();
+                window.location.href = "login.html";
+            });
+        });
+    </script>
+
+</body>
+</html>
