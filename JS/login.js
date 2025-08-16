@@ -11,13 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const res = await loginUser(username, password);
 
-            alert(res.message);
-
-            // Save user info in localStorage for later
+            // Save token + user info in localStorage
+            localStorage.setItem("token", res.token);
             localStorage.setItem("username", res.username);
             localStorage.setItem("role", res.role);
 
-            // Redirect to dashboard or home page
+            alert("Login successful!");
+
+            // Redirect to dashboard
             window.location.href = "index.html";
         } catch (err) {
             alert("Login failed: " + err.message);

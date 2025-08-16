@@ -2,21 +2,28 @@
 const API_BASE = "https://localhost:7182/api"; // your API base
 
 async function apiRequest(endpoint, method = "GET", data = null) {
+    const token = localStorage.getItem("token"); // retrieve token
     const options = {
         method,
-        headers: { "Content-Type": "application/json" }
+        headers: {
+            "Content-Type": "application/json",
+            ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        }
     };
     if (data) options.body = JSON.stringify(data);
 
     const res = await fetch(`${API_BASE}${endpoint}`, options);
 
-    // Throw helpful error on non-2xx
     if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+            // token expired or forbidden → redirect to login
+            alert("Session expired or access denied. Please log in again.");
+            window.location.href = "login.html";
+        }
         const errText = await res.text().catch(() => "");
         throw new Error(`HTTP ${res.status} ${res.statusText} — ${errText}`);
     }
 
-    // Handle text or JSON gracefully
     const ct = res.headers.get("content-type") || "";
     if (ct.includes("application/json")) return await res.json();
     return await res.text();
@@ -24,41 +31,37 @@ async function apiRequest(endpoint, method = "GET", data = null) {
 
 /* ---- Patients ---- */
 function getPatients() {
-    return apiRequest("/Patient"); // GET /api/Patient
+    return apiRequest("/Patient"); 
 }
 function addPatient(patient) {
-    // POST /api/Patient
     return apiRequest("/Patient", "POST", patient);
 }
 
 /* ---- Doctors ---- */
 function getDoctors() {
-    return apiRequest("/Doctor"); // GET /api/Doctor
+    return apiRequest("/Doctor"); 
 }
 function addDoctor(doctor) {
-    // POST /api/Doctor
     return apiRequest("/Doctor", "POST", doctor);
 }
 
 /* ---- Visit Types ---- */
 function getVisitTypes() {
-    return apiRequest("/VisitType"); // GET /api/VisitType
+    return apiRequest("/VisitType"); 
 }
 
 /* ---- Visits ---- */
 function getVisits() {
-    return apiRequest("/PatientVisit"); // GET /api/PatientVisit
+    return apiRequest("/PatientVisit"); 
 }
 function addVisit(visit) {
-    // POST /api/PatientVisit
     return apiRequest("/PatientVisit", "POST", visit);
 }
 
-// User auth
+/* ---- User Auth ---- */
 async function loginUser(username, password) {
     return await apiRequest("/User/login", "POST", { username, password });
 }
-
 async function registerUser(username, password, confirmPassword) {
     return await apiRequest("/User/register", "POST", { username, password, confirmPassword });
 }
