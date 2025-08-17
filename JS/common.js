@@ -15,10 +15,13 @@ async function apiRequest(endpoint, method = "GET", data = null) {
     const res = await fetch(`${API_BASE}${endpoint}`, options);
 
     if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
+        if (res.status === 401) {
             // token expired or forbidden → redirect to login
-            alert("Session expired or access denied. Please log in again.");
+            alert("Session expired Please log in again.");
             window.location.href = "login.html";
+        }
+        else if (res.status === 403) {
+             alert(" access denied.");
         }
         const errText = await res.text().catch(() => "");
         throw new Error(`HTTP ${res.status} ${res.statusText} — ${errText}`);
@@ -64,4 +67,11 @@ async function loginUser(username, password) {
 }
 async function registerUser(username, password, confirmPassword) {
     return await apiRequest("/User/register", "POST", { username, password, confirmPassword });
+}
+async function ChangePassword(payload) {
+    return await apiRequest("/User/change-password", "POST", payload);
+}
+
+async function AddVisitType(visitType) {
+    return await apiRequest("/VisitType", "POST", visitType);
 }

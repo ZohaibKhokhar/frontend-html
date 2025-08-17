@@ -3,24 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Patient Visit Manager</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="container py-4">
+<body style="font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0;">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Patient Visit Manager</h1>
-        <div>
-            <span id="welcomeMsg" class="me-3"></span>
-            <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+    <div style="max-width: 700px; margin: 40px auto; background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h1 style="margin: 0; font-size: 24px; color: #2c3e50;">🏥 Patient Visit Manager</h1>
+            <div style="text-align: right;">
+                <span id="welcomeMsg" style="margin-right: 10px; font-weight: bold; color: #34495e;"></span>
+                <button id="logoutBtn" 
+                        style="padding: 6px 12px; border: 1px solid #e74c3c; background: #fff; color: #e74c3c; border-radius: 6px; font-size: 13px; cursor: pointer; transition: 0.3s;">
+                    Logout
+                </button>
+            </div>
         </div>
-    </div>
 
-    <div class="list-group">
-        <a href="view-patients.html" class="list-group-item list-group-item-action">View Patients</a>
-        <a href="view-visits.html" class="list-group-item list-group-item-action">View Visits</a>
-        <a href="add-patient.html" class="list-group-item list-group-item-action">Add Patient</a>
-        <a href="add-visit.html" class="list-group-item list-group-item-action">Add Visit</a>
-        <a href="add-doctor.html" id="addDoctorLink" class="list-group-item list-group-item-action">Add Doctor</a>
+        <!-- Navigation -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href="view-patients.html" 
+               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; color: #2c3e50; background: #f9f9f9; transition: 0.3s;">
+               👥 View Patients
+            </a>
+            <a href="view-visits.html" 
+               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; color: #2c3e50; background: #f9f9f9; transition: 0.3s;">
+               📅 View Visits
+            </a>
+            <a href="add-patient.html" 
+               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; color: #2c3e50; background: #f9f9f9; transition: 0.3s;">
+               ➕ Add Patient
+            </a>
+            <a href="add-visit.html" 
+               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; color: #2c3e50; background: #f9f9f9; transition: 0.3s;">
+               🗓️ Add Visit
+            </a>
+            <a href="add-doctor.html" id="addDoctorLink"
+               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; color: #2c3e50; background: #f9f9f9; transition: 0.3s;">
+               👨‍⚕️ Add Doctor
+            </a>
+            <a href="add-visit-type.html" id="addVisitTypeLink"
+               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; color: #2c3e50; background: #f9f9f9; transition: 0.3s;">
+               📋 Add Visit Type
+            </a>
+            <a href="change-password.html" 
+               style="padding: 12px; border: 1px solid #e74c3c; border-radius: 8px; text-decoration: none; color: #e74c3c; background: #fdecea; transition: 0.3s;">
+               🔑 Change Password
+            </a>
+        </div>
     </div>
 
     <script>

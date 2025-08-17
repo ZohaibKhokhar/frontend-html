@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const doctorSel  = document.getElementById("visitDoctor");
     const typeSel    = document.getElementById("visitType");
     const form       = document.getElementById("visitForm");
+    const dateInput  = document.getElementById("visitDate");
+
+    const minDate = new Date("1753-01-01T00:00:00Z");
+    const maxDate = new Date("9999-12-31T23:59:59Z");
 
     // Populate dropdowns
     try {
@@ -11,7 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             getPatients(), getDoctors(), getVisitTypes()
         ]);
 
-        // Clear first to avoid duplicates on reloads
         patientSel.innerHTML = '<option value="" disabled selected>Select Patient</option>';
         doctorSel.innerHTML  = '<option value="" disabled selected>Select Doctor</option>';
         typeSel.innerHTML    = '<option value="" disabled selected>Select Visit Type</option>';
@@ -37,22 +40,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
+        const dateValue = dateInput.value;
+        console.log("📝 Raw input value:", dateValue);
+
+        if (!dateValue) {
+            alert("Please select a valid visit date.");
+            return;
+        }
+
+        const visitDate = new Date(dateValue);
+        console.log("📆 Parsed as JS Date:", visitDate);
+
+        if (visitDate < minDate || visitDate > maxDate) {
+            alert("Visit date must be between Jan 1, 1753 and Dec 31, 9999.");
+            return;
+        }
+
+        // Build local ISO-like string without timezone
+        const localIso = dateValue + ":00";
+        console.log("📅 Sending visitDateTime:", localIso);
+
         const visit = {
             patientID: parseInt(patientSel.value, 10),
             doctorID: parseInt(doctorSel.value, 10),
             visitTypeID: parseInt(typeSel.value, 10),
-            visitDateTime: new Date(document.getElementById("visitDate").value).toISOString(),
+            visitDate: localIso,  // "2025-08-17T15:45:00"
             description: document.getElementById("visitDescription").value.trim()
         };
+
+        console.log("🚀 Visit payload:", visit);
 
         try {
             const res = await addVisit(visit);
             alert(typeof res === "string" ? res : "Visit added successfully.");
             form.reset();
-            // Keep dropdowns populated after reset
         } catch (err) {
-            alert("Failed to add visit. " + err.message);
-            console.error(err);
+            console.error("Error adding visit:", err);
+            if (err.message.includes("403")) {
+                alert("Access denied. You don’t have permission to add visits.");
+            } else {
+                alert("Failed to add visit. " + err.message);
+            }
         }
     });
 });
